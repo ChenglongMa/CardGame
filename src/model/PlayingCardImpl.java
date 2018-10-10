@@ -2,6 +2,8 @@ package model;
 
 import model.interfaces.PlayingCard;
 
+import java.util.Objects;
+
 /**
  * The implementation of {@link PlayingCard}
  *
@@ -63,7 +65,23 @@ public class PlayingCardImpl implements PlayingCard {
 
     @Override
     public boolean equals(PlayingCard card) {
+        if (card == null) {
+            return false;
+        }
         return suit.equals(card.getSuit()) && value.equals(card.getValue());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(suit, value);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof PlayingCard)) {
+            return super.equals(obj);
+        }
+        return equals((PlayingCard) obj);
     }
 
     @Override
