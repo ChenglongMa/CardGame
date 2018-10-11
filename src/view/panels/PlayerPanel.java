@@ -1,6 +1,7 @@
-package view;
+package view.panels;
 
 import model.interfaces.Player;
+import view.bars.LeftToolbar;
 
 import javax.swing.*;
 import java.awt.*;

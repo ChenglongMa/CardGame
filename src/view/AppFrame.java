@@ -1,5 +1,9 @@
 package view;
 
+import view.bars.StatusBar;
+import view.panels.GamePanel;
+import view.panels.PlayerPanel;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -7,7 +11,7 @@ import java.util.ArrayList;
 
 public class AppFrame extends JFrame {
     private StatusBar status;
-//    private Toolbar toolbar;
+    //    private Toolbar toolbar;
     private JSplitPane contentPane;
     private PlayerPanel playerPanel;
     private GamePanel gamePanel;
@@ -30,6 +34,7 @@ public class AppFrame extends JFrame {
         // centered on screen
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
         setVisible(true);
     }
 }

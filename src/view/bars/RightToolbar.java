@@ -1,13 +1,15 @@
-package view;
+package view.bars;
+
+import view.abstracts.AbstractToolBar;
 
 import javax.swing.*;
 
-class RightToolbar extends AbstractToolBar {
+public class RightToolbar extends AbstractToolBar {
     private final JButton placeBetBtn;
     private final JButton dealCardBtn;
     private final JButton stopBtn;
 
-    RightToolbar() {
+    public RightToolbar() {
         super();
         placeBetBtn = new JButton("Place Bet");//TODO:add listener
         add(placeBetBtn);

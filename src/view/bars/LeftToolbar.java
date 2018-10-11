@@ -1,13 +1,14 @@
-package view;
+package view.bars;
+
+import view.abstracts.AbstractToolBar;
 
 import javax.swing.*;
-import java.awt.*;
 
-class LeftToolbar extends AbstractToolBar {
+public class LeftToolbar extends AbstractToolBar {
     private final JButton newPlayerBtn;
     private final JButton editPlayerBtn;
     private final JButton deletePlayerBtn;
-    LeftToolbar() {
+    public LeftToolbar() {
         super();
         newPlayerBtn = new JButton("New Player");//TODO:add listener
         add(newPlayerBtn);

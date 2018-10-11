@@ -1,4 +1,4 @@
-package view;
+package view.bars;
 
 import javax.swing.*;
 import javax.swing.border.Border;
