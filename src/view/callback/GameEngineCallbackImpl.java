@@ -1,4 +1,4 @@
-package view;
+package view.callback;
 
 import model.interfaces.GameEngine;
 import model.interfaces.Player;

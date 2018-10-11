@@ -6,12 +6,11 @@ import java.util.logging.Logger;
 
 import model.GameEngineImpl;
 import model.SimplePlayer;
-import model.PlayingCardImpl;
 import model.interfaces.GameEngine;
 import model.interfaces.Player;
 import model.interfaces.PlayingCard;
 import validate.Validator;
-import view.GameEngineCallbackImpl;
+import view.callback.GameEngineCallbackImpl;
 
 /**
  * Simple console client for SADI assignment 2, 2018
