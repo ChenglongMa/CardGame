@@ -1,4 +1,4 @@
-package view;
+package view.demo;
 
 /*
  * GridBagLayoutDemo.java requires no other files.

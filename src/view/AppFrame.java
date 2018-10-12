@@ -1,6 +1,7 @@
 package view;
 
 import model.GameEngineImpl;
+import model.SimplePlayer;
 import model.interfaces.GameEngine;
 import view.callback.GameEngineCallbackGUI;
 import view.interfaces.GameEngineCallback;
@@ -26,11 +27,15 @@ public class AppFrame extends JFrame {
         contentPane = new JSplitPane();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
+        //TODO:tmp
+        gameEngine.addPlayer(new SimplePlayer("1","abc",1000));
+
         playerPanel = new PlayerPanel(this);
         contentPane.setLeftComponent(playerPanel);
 
         gamePanel = new MainGamePanel(this);
         contentPane.setRightComponent(gamePanel);
+
 
         // finish setup
         pack();

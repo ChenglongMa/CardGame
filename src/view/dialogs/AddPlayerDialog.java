@@ -1,15 +1,17 @@
 package view.dialogs;
 
-import controller.AddPlayerListener;
 import model.SimplePlayer;
-import model.interfaces.GameEngine;
 import model.interfaces.Player;
-import view.AppFrame;
+import view.panels.PlayerPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class AddPlayerDialog extends JDialog {
+public class AddPlayerDialog extends JDialog implements ActionListener {
+    private static final String OK_COMMAND = "ok";
+    private static final String CANCEL_COMMAND = "cancel";
     private final JButton btnOk;
     private final JButton btnCancel;
     private final JLabel lblId;
@@ -18,15 +20,16 @@ public class AddPlayerDialog extends JDialog {
     private final JTextField txtId;
     private final JTextField txtName;
     private final JTextField txtPoints;
-    private final GameEngine gameEngine;
+    private Player player = null;
 
 
-    public AddPlayerDialog(AppFrame owner) {
-        super(owner, "Add New Player", true);
-        gameEngine = owner.getGameEngine();
+    public AddPlayerDialog(PlayerPanel owner) {
+        setTitle("Add New Player");
+        setModal(true);
+//        super(owner, "Add New Player", true);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setSize(300, 200);
-        setLocationRelativeTo(owner.getContentPane());
+        setLocationRelativeTo(owner.getParent());
         btnOk = new JButton("  OK  ");
         btnCancel = new JButton("Cancel");
 
@@ -46,8 +49,15 @@ public class AddPlayerDialog extends JDialog {
         addPointCpnts();
         setResizable(false);
 
-        AddPlayerListener addListener = new AddPlayerListener(this);
-        btnOk.addActionListener(addListener);
+        btnOk.setActionCommand(OK_COMMAND);
+        btnCancel.setActionCommand(CANCEL_COMMAND);
+        btnOk.addActionListener(this);
+        btnCancel.addActionListener(this);
+    }
+
+    public Player showDialog() {
+        setVisible(true);
+        return player;
     }
 
     private void addIdCpnts() {
@@ -138,18 +148,26 @@ public class AddPlayerDialog extends JDialog {
         setLayout(gridBagLayout);
     }
 
-    public Player getPlayer() {
-        try {
-            String id = txtId.getText();
-            String name = txtName.getText();
-            int points = Integer.parseInt(txtPoints.getText());
-            return new SimplePlayer(id, name, points);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Please input valid points");
-        }
+    private void setPlayer() {
+        String id = txtId.getText();
+        String name = txtName.getText();
+        int points = Integer.parseInt(txtPoints.getText());
+        player = new SimplePlayer(id, name, points);
     }
 
-    public GameEngine getGameEngine() {
-        return gameEngine;
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        try {
+            switch (e.getActionCommand()) {
+                case OK_COMMAND:
+                    setPlayer();
+                    break;
+                case CANCEL_COMMAND:
+                    break;
+            }
+            setVisible(false);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
     }
 }
