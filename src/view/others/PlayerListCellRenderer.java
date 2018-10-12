@@ -10,6 +10,8 @@ public class PlayerListCellRenderer extends JLabel implements ListCellRenderer<P
 
     public PlayerListCellRenderer() {
         defaultBackground = getBackground();
+        //TODO: set font
+//        setFont(new Font(getFont().getFontName(),getFont().getStyle(),16));
         setOpaque(true);
     }
 

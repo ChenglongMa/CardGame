@@ -1,5 +1,8 @@
 package view.panels;
 
+import controller.buttonListener.BetListener;
+import controller.buttonListener.DealListener;
+import model.interfaces.GameEngine;
 import model.interfaces.Player;
 import view.AppFrame;
 import view.bars.RightToolbar;
@@ -14,9 +17,13 @@ public class MainGamePanel extends JPanel {
     private final CardPanel playerPanel;
     private final CardPanel housePanel;
     private final AppFrame appFrame;
+    private final GameEngine gameEngine;
     private Player currentPlayer;
+
     public MainGamePanel(AppFrame app) {
         toolbar = new RightToolbar();
+        toolbar.setBetListener(new BetListener(this));
+        toolbar.setDealListener(new DealListener(this));
         statusBar = new StatusBar();
         setLayout(new BorderLayout());
         setBorder(null);
@@ -24,7 +31,6 @@ public class MainGamePanel extends JPanel {
 
         JSplitPane contentPane = new JSplitPane();
         contentPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
-
         housePanel = new CardPanel();
         playerPanel = new CardPanel();
         contentPane.setTopComponent(playerPanel);
@@ -34,6 +40,11 @@ public class MainGamePanel extends JPanel {
         add(statusBar, BorderLayout.SOUTH);
         add(toolbar, BorderLayout.NORTH);
         this.appFrame = app;
+        gameEngine = app.getGameEngine();
+    }
+
+    public GameEngine getGameEngine() {
+        return gameEngine;
     }
 
     public RightToolbar getToolbar() {

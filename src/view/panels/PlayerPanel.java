@@ -1,13 +1,14 @@
 package view.panels;
 
-import controller.AddPlayerListener;
-import controller.DeletePlayerListener;
-import controller.EditPlayerListener;
+import controller.listListener.AddPlayerListener;
+import controller.listListener.DeletePlayerListener;
+import controller.listListener.EditPlayerListener;
 import model.interfaces.GameEngine;
 import model.interfaces.Player;
 import view.AppFrame;
 import view.bars.LeftToolbar;
 import view.bars.RightToolbar;
+import view.bars.StatusBar;
 import view.others.PlayerListCellRenderer;
 
 import javax.swing.*;
@@ -23,6 +24,7 @@ public class PlayerPanel extends JPanel implements ListSelectionListener {
     private final AppFrame appFrame;
     private final GameEngine gameEngine;
     private Player selectedPlayer;
+    private int selectedIndex = -1;
 
 
     public PlayerPanel(AppFrame appFrame) {
@@ -41,12 +43,14 @@ public class PlayerPanel extends JPanel implements ListSelectionListener {
         toolbar.setAddPlayerListener(new AddPlayerListener(this));
         toolbar.setDeletePlayerListener(new DeletePlayerListener(this));
         toolbar.setEditPlayerListener(new EditPlayerListener(this));
+        toolbar.setButtonEnabled(false);
         addToolBar(toolbar);
         //Set JList
         playerJList = new JList<>();
         playerJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         playerJList.setCellRenderer(new PlayerListCellRenderer());
         playerJList.addListSelectionListener(this);
+        setSelectedIndex();
         addJList(playerJList);
         refreshList();
     }
@@ -89,19 +93,29 @@ public class PlayerPanel extends JPanel implements ListSelectionListener {
         if (e.getValueIsAdjusting()) {
             return;
         }
+        selectedIndex = playerJList.getSelectedIndex();
         selectedPlayer = playerJList.getSelectedValue();
         boolean hasSelected = selectedPlayer != null;
         toolbar.setButtonEnabled(hasSelected);
         MainGamePanel gamePanel = appFrame.getGamePanel();
+        StatusBar statusBar = gamePanel.getStatusBar();
+        statusBar.updatePlayerStatus(selectedPlayer);
         RightToolbar rToolbar = gamePanel.getToolbar();
         hasSelected = hasSelected && selectedPlayer.getPoints() > 0;
-        rToolbar.setButtonEnabled(hasSelected);
+        rToolbar.setCanPlaceBet(hasSelected);
+        rToolbar.setCanDeal(hasSelected);
         if (hasSelected) {
             gamePanel.setCurrentPlayer(selectedPlayer);
         }
 
         //TODO:set game panel enabled
 
+    }
+
+    public void setSelectedIndex() {
+        int size = playerJList.getModel().getSize();
+        int index = selectedIndex < size ? selectedIndex : size - 1;
+        playerJList.setSelectedIndex(index);
     }
 
     public Player getSelectedPlayer() {

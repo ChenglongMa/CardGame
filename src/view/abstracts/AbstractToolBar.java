@@ -11,5 +11,4 @@ public abstract class AbstractToolBar extends JToolBar {
         setFloatable(false);
     }
 
-    public abstract void setButtonEnabled(boolean enabled);
 }
