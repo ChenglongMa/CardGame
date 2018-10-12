@@ -10,4 +10,6 @@ public abstract class AbstractToolBar extends JToolBar {
         setLayout(flowLayout);
         setFloatable(false);
     }
+
+    public abstract void setButtonEnabled(boolean enabled);
 }

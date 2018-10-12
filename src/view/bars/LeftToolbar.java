@@ -1,6 +1,8 @@
 package view.bars;
 
 import controller.AddPlayerListener;
+import controller.DeletePlayerListener;
+import controller.EditPlayerListener;
 import view.abstracts.AbstractToolBar;
 
 import javax.swing.*;
@@ -22,5 +24,19 @@ public class LeftToolbar extends AbstractToolBar {
 
     public void setAddPlayerListener(AddPlayerListener listener) {
         newPlayerBtn.addActionListener(listener);
+    }
+
+    public void setDeletePlayerListener(DeletePlayerListener listener) {
+        deletePlayerBtn.addActionListener(listener);
+    }
+
+    public void setEditPlayerListener(EditPlayerListener listener) {
+        editPlayerBtn.addActionListener(listener);
+    }
+
+    @Override
+    public void setButtonEnabled(boolean enabled) {
+        editPlayerBtn.setEnabled(enabled);
+        deletePlayerBtn.setEnabled(enabled);
     }
 }

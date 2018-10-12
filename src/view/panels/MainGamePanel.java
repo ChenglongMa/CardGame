@@ -1,5 +1,6 @@
 package view.panels;
 
+import model.interfaces.Player;
 import view.AppFrame;
 import view.bars.RightToolbar;
 import view.bars.StatusBar;
@@ -13,13 +14,12 @@ public class MainGamePanel extends JPanel {
     private final CardPanel playerPanel;
     private final CardPanel housePanel;
     private final AppFrame appFrame;
-
+    private Player currentPlayer;
     public MainGamePanel(AppFrame app) {
         toolbar = new RightToolbar();
         statusBar = new StatusBar();
         setLayout(new BorderLayout());
         setBorder(null);
-
 
 
         JSplitPane contentPane = new JSplitPane();
@@ -36,4 +36,19 @@ public class MainGamePanel extends JPanel {
         this.appFrame = app;
     }
 
+    public RightToolbar getToolbar() {
+        return toolbar;
+    }
+
+    public StatusBar getStatusBar() {
+        return statusBar;
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
 }

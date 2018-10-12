@@ -1,23 +1,28 @@
 package view.panels;
 
 import controller.AddPlayerListener;
+import controller.DeletePlayerListener;
+import controller.EditPlayerListener;
 import model.interfaces.GameEngine;
 import model.interfaces.Player;
 import view.AppFrame;
 import view.bars.LeftToolbar;
+import view.bars.RightToolbar;
 import view.others.PlayerListCellRenderer;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.util.Collection;
 
-public class PlayerPanel extends JPanel {
+public class PlayerPanel extends JPanel implements ListSelectionListener {
     //    private final List<Player> players;
     private final JList<Player> playerJList;
     private final LeftToolbar toolbar;
     private final AppFrame appFrame;
-    private  DefaultListModel<Player> playerList;
     private final GameEngine gameEngine;
+    private Player selectedPlayer;
 
 
     public PlayerPanel(AppFrame appFrame) {
@@ -34,13 +39,14 @@ public class PlayerPanel extends JPanel {
         //Set toolbar
         toolbar = new LeftToolbar();
         toolbar.setAddPlayerListener(new AddPlayerListener(this));
-//        toolbar.setEditPlayerListener(new EditPlayerListener(this));
+        toolbar.setDeletePlayerListener(new DeletePlayerListener(this));
+        toolbar.setEditPlayerListener(new EditPlayerListener(this));
         addToolBar(toolbar);
         //Set JList
-        playerList = new DefaultListModel<>();
-        playerJList = new JList<>(playerList);
+        playerJList = new JList<>();
         playerJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         playerJList.setCellRenderer(new PlayerListCellRenderer());
+        playerJList.addListSelectionListener(this);
         addJList(playerJList);
         refreshList();
     }
@@ -66,18 +72,39 @@ public class PlayerPanel extends JPanel {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                Collection<Player> list= gameEngine.getAllPlayers();
+                Collection<Player> list = gameEngine.getAllPlayers();
                 Player[] players = new Player[list.size()];
                 list.toArray(players);
                 playerJList.setListData(players);
-//                for (Player player : gameEngine.getAllPlayers()) {
-//                    playerList.addElement(player);
-//                }
             }
         });
     }
 
     public GameEngine getGameEngine() {
         return gameEngine;
+    }
+
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+        if (e.getValueIsAdjusting()) {
+            return;
+        }
+        selectedPlayer = playerJList.getSelectedValue();
+        boolean hasSelected = selectedPlayer != null;
+        toolbar.setButtonEnabled(hasSelected);
+        MainGamePanel gamePanel = appFrame.getGamePanel();
+        RightToolbar rToolbar = gamePanel.getToolbar();
+        hasSelected = hasSelected && selectedPlayer.getPoints() > 0;
+        rToolbar.setButtonEnabled(hasSelected);
+        if (hasSelected) {
+            gamePanel.setCurrentPlayer(selectedPlayer);
+        }
+
+        //TODO:set game panel enabled
+
+    }
+
+    public Player getSelectedPlayer() {
+        return selectedPlayer;
     }
 }

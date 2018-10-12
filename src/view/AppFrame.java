@@ -14,21 +14,21 @@ import java.awt.*;
 
 public class AppFrame extends JFrame {
     private final GameEngine gameEngine;
-    private final GameEngineCallback gameEngineCallback;
     private JSplitPane contentPane;
     private PlayerPanel playerPanel;
     private MainGamePanel gamePanel;
+
     public AppFrame() throws HeadlessException {
         super("Card Game");
         gameEngine = new GameEngineImpl();
-        gameEngineCallback = new GameEngineCallbackGUI();
+        GameEngineCallback gameEngineCallback = new GameEngineCallbackGUI();
         gameEngine.addGameEngineCallback(gameEngineCallback);
 
         contentPane = new JSplitPane();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
         //TODO:tmp
-        gameEngine.addPlayer(new SimplePlayer("1","abc",1000));
+        gameEngine.addPlayer(new SimplePlayer("1", "abc", 1000));
 
         playerPanel = new PlayerPanel(this);
         contentPane.setLeftComponent(playerPanel);
@@ -46,6 +46,14 @@ public class AppFrame extends JFrame {
         setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
         setVisible(true);
 
+    }
+
+    public PlayerPanel getPlayerPanel() {
+        return playerPanel;
+    }
+
+    public MainGamePanel getGamePanel() {
+        return gamePanel;
     }
 
     public GameEngine getGameEngine() {

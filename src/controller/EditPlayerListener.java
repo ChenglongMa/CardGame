@@ -5,22 +5,29 @@ import model.interfaces.Player;
 import view.dialogs.AddEditPlayerDialog;
 import view.panels.PlayerPanel;
 
-public class AddPlayerListener extends ListListenerTemplate {
+public class EditPlayerListener extends ListListenerTemplate {
+    //TODO:to be finished
     private final PlayerPanel playerPanel;
 
-    public AddPlayerListener(PlayerPanel playerPanel) {
+    public EditPlayerListener(PlayerPanel playerPanel) {
         super(playerPanel);
         this.playerPanel = playerPanel;
     }
 
+
     @Override
     void operation() {
-        AddEditPlayerDialog dialog = new AddEditPlayerDialog(playerPanel);
+        Player selectedPlayer = playerPanel.getSelectedPlayer();
+        if (selectedPlayer == null) {
+            return;
+        }
+        AddEditPlayerDialog dialog = new AddEditPlayerDialog(playerPanel, selectedPlayer);
         Player player = dialog.showDialog();
         if (player == null) {
             return;
         }
         GameEngine engine = playerPanel.getGameEngine();
+        engine.removePlayer(selectedPlayer);
         engine.addPlayer(player);
     }
 }

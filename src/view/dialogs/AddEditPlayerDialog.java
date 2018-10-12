@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class AddPlayerDialog extends JDialog implements ActionListener {
+public class AddEditPlayerDialog extends JDialog implements ActionListener {
     private static final String OK_COMMAND = "ok";
     private static final String CANCEL_COMMAND = "cancel";
     private final JButton btnOk;
@@ -23,7 +23,7 @@ public class AddPlayerDialog extends JDialog implements ActionListener {
     private Player player = null;
 
 
-    public AddPlayerDialog(PlayerPanel owner) {
+    public AddEditPlayerDialog(PlayerPanel owner) {
         setTitle("Add New Player");
         setModal(true);
 //        super(owner, "Add New Player", true);
@@ -54,6 +54,24 @@ public class AddPlayerDialog extends JDialog implements ActionListener {
         btnOk.addActionListener(this);
         btnCancel.addActionListener(this);
     }
+
+    public AddEditPlayerDialog(PlayerPanel panel, Player selectedPlayer) {
+        this(panel);
+        setTitle("Edit Player");
+        setInitialValues(selectedPlayer);
+    }
+
+    private void setInitialValues(Player selectedPlayer) {
+        if (selectedPlayer == null) {
+            return;
+        }
+        txtId.setText(selectedPlayer.getPlayerId());
+        txtId.setEnabled(false);
+        txtId.setToolTipText("Cannot modify the player's ID");
+        txtName.setText(selectedPlayer.getPlayerName());
+        txtPoints.setText(String.valueOf(selectedPlayer.getPoints()));
+    }
+
 
     public Player showDialog() {
         setVisible(true);
