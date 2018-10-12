@@ -1,6 +1,9 @@
 package client;
 
+import model.PlayingCardImpl;
+import model.interfaces.PlayingCard;
 import view.AppFrame;
+import view.panels.CardPanel;
 
 import javax.swing.*;
 
@@ -13,9 +16,5 @@ public class GUITestClient {
                 new AppFrame();
             }
         });
-    }
-
-    public class ToolBar extends JToolBar {
-
     }
 }

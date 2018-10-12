@@ -19,7 +19,6 @@ public class MainGamePanel extends JPanel {
     private final AppFrame appFrame;
     private final GameEngine gameEngine;
     private Player currentPlayer;
-
     public MainGamePanel(AppFrame app) {
         toolbar = new RightToolbar();
         toolbar.setBetListener(new BetListener(this));
@@ -41,6 +40,14 @@ public class MainGamePanel extends JPanel {
         add(toolbar, BorderLayout.NORTH);
         this.appFrame = app;
         gameEngine = app.getGameEngine();
+    }
+
+    public CardPanel getPlayerPanel() {
+        return playerPanel;
+    }
+
+    public CardPanel getHousePanel() {
+        return housePanel;
     }
 
     public GameEngine getGameEngine() {

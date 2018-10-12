@@ -103,15 +103,12 @@ public class PlayerPanel extends JPanel implements ListSelectionListener {
         RightToolbar rToolbar = gamePanel.getToolbar();
         hasSelected = hasSelected && selectedPlayer.getPoints() > 0;
         rToolbar.setCanPlaceBet(hasSelected);
-        rToolbar.setCanDeal(hasSelected);
         if (hasSelected) {
             gamePanel.setCurrentPlayer(selectedPlayer);
         }
-
-        //TODO:set game panel enabled
-
     }
 
+    //TODO: to be checked
     public void setSelectedIndex() {
         int size = playerJList.getModel().getSize();
         int index = selectedIndex < size ? selectedIndex : size - 1;

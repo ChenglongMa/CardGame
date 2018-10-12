@@ -4,6 +4,7 @@ import model.GameEngineImpl;
 import model.SimplePlayer;
 import model.interfaces.GameEngine;
 import view.callback.GameEngineCallbackGUI;
+import view.callback.GameEngineCallbackImpl;
 import view.interfaces.GameEngineCallback;
 import view.panels.MainGamePanel;
 import view.panels.PlayerPanel;
@@ -20,20 +21,23 @@ public class AppFrame extends JFrame {
 
     public AppFrame() throws HeadlessException {
         super("Card Game");
+
         gameEngine = new GameEngineImpl();
-        GameEngineCallback gameEngineCallback = new GameEngineCallbackGUI();
+        gamePanel = new MainGamePanel(this);
+        GameEngineCallback gameEngineCallback = new GameEngineCallbackGUI(gamePanel);
         gameEngine.addGameEngineCallback(gameEngineCallback);
 
         contentPane = new JSplitPane();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
         //TODO:tmp
+        gameEngine.addGameEngineCallback(new GameEngineCallbackImpl());
         gameEngine.addPlayer(new SimplePlayer("1", "abc", 1000));
 
         playerPanel = new PlayerPanel(this);
         contentPane.setLeftComponent(playerPanel);
 
-        gamePanel = new MainGamePanel(this);
+
         contentPane.setRightComponent(gamePanel);
 
 
