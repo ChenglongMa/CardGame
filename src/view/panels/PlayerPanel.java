@@ -1,21 +1,22 @@
 package view.panels;
 
 import model.interfaces.Player;
+import view.AppFrame;
 import view.bars.LeftToolbar;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 
 public class PlayerPanel extends JPanel {
-    private final List<Player> players;
+    //    private final List<Player> players;
     private final JList<Player> playerJList;
     private final LeftToolbar toolbar;
+    private final AppFrame appFrame;
 
 
-    public PlayerPanel(List<Player> players) {
+    public PlayerPanel(AppFrame appFrame) {
         setBorder(null);
-        this.players = players;
+        this.appFrame = appFrame;
         //Set layout
         GridBagLayout gridBagLayout = new GridBagLayout();
         gridBagLayout.columnWidths = new int[]{0, 0};
@@ -24,12 +25,14 @@ public class PlayerPanel extends JPanel {
         gridBagLayout.rowWeights = new double[]{0.0, 1.0, 1.0E-4};
         setLayout(gridBagLayout);
         //Set toolbar
-        toolbar = new LeftToolbar();
+        toolbar = new LeftToolbar(appFrame);
         addToolBar(toolbar);
         //Set JList
         playerJList = new JList<>();
         playerJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         addJList(playerJList);
+//        addPlayerDialog.setVisible(true);
+
     }
 
     private void addJList(JList jList) {

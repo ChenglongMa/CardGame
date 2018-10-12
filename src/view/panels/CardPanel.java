@@ -7,4 +7,6 @@ import javax.swing.*;
  */
 public class CardPanel extends JLayeredPane {
 
+    public CardPanel() {
+    }
 }

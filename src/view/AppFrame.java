@@ -1,31 +1,35 @@
 package view;
 
-import view.bars.StatusBar;
-import view.panels.GamePanel;
+import model.GameEngineImpl;
+import model.interfaces.GameEngine;
+import view.callback.GameEngineCallbackGUI;
+import view.interfaces.GameEngineCallback;
+import view.panels.MainGamePanel;
 import view.panels.PlayerPanel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class AppFrame extends JFrame {
-    private StatusBar status;
-    //    private Toolbar toolbar;
+    private final GameEngine gameEngine;
+    private final GameEngineCallback gameEngineCallback;
     private JSplitPane contentPane;
     private PlayerPanel playerPanel;
-    private GamePanel gamePanel;
-
+    private MainGamePanel gamePanel;
     public AppFrame() throws HeadlessException {
         super("Card Game");
+        gameEngine = new GameEngineImpl();
+        gameEngineCallback = new GameEngineCallbackGUI();
+        gameEngine.addGameEngineCallback(gameEngineCallback);
 
         contentPane = new JSplitPane();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
-        playerPanel = new PlayerPanel(new ArrayList<>());
+        playerPanel = new PlayerPanel(this);
         contentPane.setLeftComponent(playerPanel);
 
-        gamePanel = new GamePanel();
+        gamePanel = new MainGamePanel(this);
         contentPane.setRightComponent(gamePanel);
 
         // finish setup
@@ -36,5 +40,11 @@ public class AppFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
         setVisible(true);
+
     }
+
+    public GameEngine getGameEngine() {
+        return gameEngine;
+    }
+
 }
