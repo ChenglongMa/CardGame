@@ -10,9 +10,14 @@ import java.awt.event.ActionListener;
 
 public class DealListener implements ActionListener {
     private final MainGamePanel gamePanel;
+    private Thread currThread;
 
     public DealListener(MainGamePanel gamePanel) {
         this.gamePanel = gamePanel;
+    }
+
+    public Thread getCurrThread() {
+        return currThread;
     }
 
     @Override
@@ -24,16 +29,22 @@ public class DealListener implements ActionListener {
             return;
         }
         gamePanel.getToolbar().setCanPlaceBet(false);
-        gamePanel.getPlayerPanel().clearCard();
+        gamePanel.getPlayerPanel(player).clearCard();
         gamePanel.getHousePanel().clearCard();
         final GameEngine gameEngine = gamePanel.getGameEngine();
-        new Thread(new Runnable() {
+        currThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                gameEngine.dealPlayer(player, 1000);//TODO: need more flexible
-                gameEngine.dealHouse(1000);//TODO: need more flexible
-            }
-        }).start();
+                try {
+                    gamePanel.getToolbar().setCanDeal(false);
+                    gameEngine.dealPlayer(player, 1000);//TODO: need more flexible
+                    gameEngine.dealHouse(1000);//TODO: in another thread
+                } catch (Exception ex) {
+                    gamePanel.getToolbar().setCanPlaceBet(true);
 
+                }
+            }
+        });
+        currThread.start();
     }
 }

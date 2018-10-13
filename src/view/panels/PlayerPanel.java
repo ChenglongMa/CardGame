@@ -16,6 +16,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PlayerPanel extends JPanel implements ListSelectionListener {
     //    private final List<Player> players;
@@ -23,6 +25,7 @@ public class PlayerPanel extends JPanel implements ListSelectionListener {
     private final LeftToolbar toolbar;
     private final AppFrame appFrame;
     private final GameEngine gameEngine;
+    private final Map<Player, Thread> playerThreads;
     private Player selectedPlayer;
     private int selectedIndex = -1;
 
@@ -53,6 +56,7 @@ public class PlayerPanel extends JPanel implements ListSelectionListener {
         setSelectedIndex();
         addJList(playerJList);
         refreshList();
+        playerThreads = new HashMap<>();
     }
 
     private void addJList(JList jList) {
@@ -93,22 +97,34 @@ public class PlayerPanel extends JPanel implements ListSelectionListener {
         if (e.getValueIsAdjusting()) {
             return;
         }
+        MainGamePanel gamePanel = appFrame.getGamePanel();
+        Thread currThread = gamePanel.getCurrentThread();
+        if (currThread != null && currThread.isAlive()) {
+            String msg = "Current game would be interrupted,\nDo you want to continue?";
+            int res = JOptionPane.showConfirmDialog(appFrame, msg);
+            if (res == JOptionPane.YES_OPTION) {
+                currThread.interrupt();
+            } else return;
+        }
         selectedIndex = playerJList.getSelectedIndex();
         selectedPlayer = playerJList.getSelectedValue();
         boolean hasSelected = selectedPlayer != null;
+        if (hasSelected) {
+            gamePanel.setCurrentPlayer(selectedPlayer);
+            gamePanel.switchPlayerPanel();
+        }
         toolbar.setButtonEnabled(hasSelected);
-        MainGamePanel gamePanel = appFrame.getGamePanel(selectedPlayer);
+//        gamePanel = appFrame.getGamePanel(selectedPlayer);
+//        appFrame.setGamePanel(gamePanel);
         StatusBar statusBar = gamePanel.getStatusBar();
         statusBar.updatePlayerStatus(selectedPlayer);
         RightToolbar rToolbar = gamePanel.getToolbar();
         hasSelected = hasSelected && selectedPlayer.getPoints() > 0;
         rToolbar.setCanPlaceBet(hasSelected);
-        if (hasSelected) {
-            gamePanel.setCurrentPlayer(selectedPlayer);
-        }
     }
 
     //TODO: to be checked
+    @Deprecated
     public void setSelectedIndex() {
         int size = playerJList.getModel().getSize();
         int index = selectedIndex < size ? selectedIndex : size - 1;

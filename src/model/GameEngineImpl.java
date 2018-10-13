@@ -110,7 +110,8 @@ public class GameEngineImpl implements GameEngine {
                 card = nextCard();
                 Thread.sleep(delay);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                // stop if the thread was interrupted.
+                return;
             }
         }
         callbackStrategy.bustCard(card);

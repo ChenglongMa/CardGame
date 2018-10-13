@@ -10,29 +10,36 @@ import view.bars.StatusBar;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainGamePanel extends JPanel {
     private final RightToolbar toolbar;
     private final StatusBar statusBar;
-    private final CardPanel playerPanel;
     private final CardPanel housePanel;
     private final AppFrame appFrame;
     private final GameEngine gameEngine;
+    private final DealListener dealListener;
+    private final Map<Player, CardPanel> cardPanelMap;
+    private final JSplitPane contentPane;
     private Player currentPlayer;
 
     public MainGamePanel(AppFrame app) {
+        cardPanelMap = new HashMap<>();
+        cardPanelMap.put(null, new CardPanel());
+        dealListener = new DealListener(this);
         toolbar = new RightToolbar();
         toolbar.setBetListener(new BetListener(this));
-        toolbar.setDealListener(new DealListener(this));
+        toolbar.setDealListener(dealListener);
         statusBar = new StatusBar();
         setLayout(new BorderLayout());
         setBorder(null);
 
 
-        JSplitPane contentPane = new JSplitPane();
+        contentPane = new JSplitPane();
         contentPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
         housePanel = new CardPanel();
-        playerPanel = new CardPanel();
+        CardPanel playerPanel = new CardPanel();
         contentPane.setTopComponent(playerPanel);
         contentPane.setBottomComponent(housePanel);
         contentPane.setDividerLocation(0.5);
@@ -44,8 +51,26 @@ public class MainGamePanel extends JPanel {
         gameEngine = app.getGameEngine();
     }
 
+    public Thread getCurrentThread() {
+        return dealListener.getCurrThread();
+    }
+
+    @Deprecated
     public CardPanel getPlayerPanel() {
-        return playerPanel;
+        return getPlayerPanel(currentPlayer);
+    }
+
+    public void switchPlayerPanel() {
+        CardPanel currPanel = getPlayerPanel(currentPlayer);
+        contentPane.setTopComponent(currPanel);
+    }
+
+    public CardPanel getPlayerPanel(Player currentPlayer) {
+        if (!cardPanelMap.containsKey(currentPlayer)) {
+            CardPanel panel = new CardPanel();
+            cardPanelMap.put(currentPlayer, panel);
+        }
+        return cardPanelMap.get(currentPlayer);
     }
 
     public CardPanel getHousePanel() {
@@ -73,6 +98,7 @@ public class MainGamePanel extends JPanel {
     }
 
     public void updatePlayerStatus() {
+        //TODO:check change or not
         boolean canPlace = currentPlayer != null && currentPlayer.getPoints() > 0;
         boolean canDeal = canPlace && currentPlayer.getBet() > 0;
         toolbar.setCanPlaceBet(canPlace);

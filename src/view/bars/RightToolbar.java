@@ -17,7 +17,7 @@ public class RightToolbar extends AbstractToolBar {
         dealCardBtn = new JButton("Deal Card");//todo:set enabled
         add(dealCardBtn);
         stopBtn = new JButton("Stop");//todo:set enabled
-        stopBtn.setEnabled(false);
+        stopBtn.setEnabled(true);
         add(stopBtn);
         setCanPlaceBet(false);
         setCanDeal(false);
