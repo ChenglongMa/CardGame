@@ -19,14 +19,19 @@ public class DealListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         //TODO: to be finished
         final Player player = gamePanel.getCurrentPlayer();
-        if (player == null) {
+        if (player == null || player.getBet() <= 0) {
+            JOptionPane.showMessageDialog(gamePanel, "Please place your bet.");
             return;
         }
+        gamePanel.getToolbar().setCanPlaceBet(false);
+        gamePanel.getPlayerPanel().clearCard();
+        gamePanel.getHousePanel().clearCard();
         final GameEngine gameEngine = gamePanel.getGameEngine();
         new Thread(new Runnable() {
             @Override
             public void run() {
                 gameEngine.dealPlayer(player, 1000);//TODO: need more flexible
+                gameEngine.dealHouse(1000);//TODO: need more flexible
             }
         }).start();
 

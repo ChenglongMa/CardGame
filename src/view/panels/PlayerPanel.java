@@ -97,7 +97,7 @@ public class PlayerPanel extends JPanel implements ListSelectionListener {
         selectedPlayer = playerJList.getSelectedValue();
         boolean hasSelected = selectedPlayer != null;
         toolbar.setButtonEnabled(hasSelected);
-        MainGamePanel gamePanel = appFrame.getGamePanel();
+        MainGamePanel gamePanel = appFrame.getGamePanel(selectedPlayer);
         StatusBar statusBar = gamePanel.getStatusBar();
         statusBar.updatePlayerStatus(selectedPlayer);
         RightToolbar rToolbar = gamePanel.getToolbar();

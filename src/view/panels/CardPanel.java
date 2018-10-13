@@ -15,20 +15,32 @@ public class CardPanel extends JLayeredPane {
     private Point location;
 
     public CardPanel() {
-        location = new Point(10, 10);
-        constraints = 0;
+        initLocation();
         setOpaque(true);
         //TODO
-        setPreferredSize(new Dimension(300, 310));
+//        Container parent = getParent();
+//        setPreferredSize(new Dimension(parent.getWidth(), parent.getHeight() / 2));
+    }
+
+    private void initLocation() {
+        location = new Point(10, 10);
+        constraints = 0;
     }
 
     public void addCard(PlayingCard card) {
         JLabel c = new JLabel(CardFactory.getIcon(card));
         c.setOpaque(true);
         c.setBorder(BorderFactory.createLineBorder(Color.black));
+        c.setBackground(Color.WHITE);
         c.setBounds(location.x, location.y, 222, 323);
         offset(c.getWidth() / 3, 10);
         add(c, constraints++);
+    }
+
+    public void clearCard() {
+        initLocation();
+        removeAll();
+        repaint();
     }
 
     private void offset(int off_x, int off_y) {

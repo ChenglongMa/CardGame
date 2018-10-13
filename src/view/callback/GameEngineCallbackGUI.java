@@ -22,24 +22,20 @@ public class GameEngineCallbackGUI implements GameEngineCallback {
 
     @Override
     public void nextCard(final Player player, final PlayingCard card, GameEngine engine) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                playerPanel.addCard(card);
-            }
-        });
-
+        playerPanel.addCard(card);
     }
 
     @Override
     public void bustCard(Player player, PlayingCard card, GameEngine engine) {
         playerPanel.addCard(card);
+        JOptionPane.showMessageDialog(playerPanel, "YOU BUSTED!");
 
     }
 
     @Override
     public void result(Player player, int result, GameEngine engine) {
-        gamePanel.getStatusBar().updatePlayerStatus(player);
+        gamePanel.setCurrentPlayer(player);
+        gamePanel.updatePlayerStatus();
     }
 
     @Override
@@ -50,10 +46,13 @@ public class GameEngineCallbackGUI implements GameEngineCallback {
     @Override
     public void houseBustCard(PlayingCard card, GameEngine engine) {
         housePanel.addCard(card);
+        JOptionPane.showMessageDialog(housePanel, "HOUSE BUSTED!");
     }
 
     @Override
     public void houseResult(int result, GameEngine engine) {
-        gamePanel.getStatusBar().updateHouseStatus(result);
+        gamePanel.getStatusBar().updateHouseResult(result);
+
+        gamePanel.updatePlayerStatus();
     }
 }

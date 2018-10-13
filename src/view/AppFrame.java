@@ -3,6 +3,7 @@ package view;
 import model.GameEngineImpl;
 import model.SimplePlayer;
 import model.interfaces.GameEngine;
+import model.interfaces.Player;
 import view.callback.GameEngineCallbackGUI;
 import view.callback.GameEngineCallbackImpl;
 import view.interfaces.GameEngineCallback;
@@ -12,27 +13,27 @@ import view.panels.PlayerPanel;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AppFrame extends JFrame {
     private final GameEngine gameEngine;
-    private JSplitPane contentPane;
-    private PlayerPanel playerPanel;
-    private MainGamePanel gamePanel;
+    private final PlayerPanel playerPanel;
+    private final MainGamePanel gamePanel;
+    private final Map<Player, MainGamePanel> gamePanelMap;
 
     public AppFrame() throws HeadlessException {
         super("Card Game");
-
+        gamePanelMap = new HashMap<>();
         gameEngine = new GameEngineImpl();
         gamePanel = new MainGamePanel(this);
         GameEngineCallback gameEngineCallback = new GameEngineCallbackGUI(gamePanel);
         gameEngine.addGameEngineCallback(gameEngineCallback);
 
-        contentPane = new JSplitPane();
+        JSplitPane contentPane = new JSplitPane();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
-        //TODO:tmp
-        gameEngine.addGameEngineCallback(new GameEngineCallbackImpl());
-        gameEngine.addPlayer(new SimplePlayer("1", "abc", 1000));
+
 
         playerPanel = new PlayerPanel(this);
         contentPane.setLeftComponent(playerPanel);
@@ -49,15 +50,18 @@ public class AppFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
         setVisible(true);
-
+        //TODO:tmp
+        gameEngine.addGameEngineCallback(new GameEngineCallbackImpl());
+        gameEngine.addPlayer(new SimplePlayer("1", "John", 500));
+        gameEngine.addPlayer(new SimplePlayer("2", "Tom", 1000));
     }
 
     public PlayerPanel getPlayerPanel() {
         return playerPanel;
     }
 
-    public MainGamePanel getGamePanel() {
-        return gamePanel;
+    public MainGamePanel getGamePanel(Player player) {
+        return gamePanelMap.get(player);
     }
 
     public GameEngine getGameEngine() {

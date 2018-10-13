@@ -19,6 +19,7 @@ public class MainGamePanel extends JPanel {
     private final AppFrame appFrame;
     private final GameEngine gameEngine;
     private Player currentPlayer;
+
     public MainGamePanel(AppFrame app) {
         toolbar = new RightToolbar();
         toolbar.setBetListener(new BetListener(this));
@@ -34,7 +35,8 @@ public class MainGamePanel extends JPanel {
         playerPanel = new CardPanel();
         contentPane.setTopComponent(playerPanel);
         contentPane.setBottomComponent(housePanel);
-
+        contentPane.setDividerLocation(0.5);
+        contentPane.setResizeWeight(0.5);
         add(contentPane, BorderLayout.CENTER);
         add(statusBar, BorderLayout.SOUTH);
         add(toolbar, BorderLayout.NORTH);
@@ -68,5 +70,13 @@ public class MainGamePanel extends JPanel {
 
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
+    }
+
+    public void updatePlayerStatus() {
+        boolean canPlace = currentPlayer != null && currentPlayer.getPoints() > 0;
+        boolean canDeal = canPlace && currentPlayer.getBet() > 0;
+        toolbar.setCanPlaceBet(canPlace);
+        toolbar.setCanDeal(canDeal);
+        statusBar.updatePlayerStatus(currentPlayer);
     }
 }

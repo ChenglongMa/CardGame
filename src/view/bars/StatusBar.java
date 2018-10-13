@@ -9,35 +9,32 @@ import java.awt.*;
 public class StatusBar extends JPanel {
     private static final String CURR_PLAYER = "Player: ";
     private static final String BETS = "Bets: ";
-    private static final String RESULT = "Result: ";
-    private static final String HOUSE_POINTS = "House Points: ";
+    private static final String RESULT = "Player Result: ";
+    private static final String HOUSE_RESULT = "House Result: ";
 
     private JLabel playerInfo;
     private JLabel playerBets;
     private JLabel playerResult;
-    private JLabel houseStatus;
-    private JLabel sumStatus;
+    private JLabel houseResult;
 
     public StatusBar() {
         playerInfo = new JLabel(CURR_PLAYER, SwingConstants.LEFT);
         playerBets = new JLabel(BETS, SwingConstants.LEFT);
         playerResult = new JLabel(RESULT, SwingConstants.LEFT);
-        houseStatus = new JLabel(HOUSE_POINTS, SwingConstants.LEFT);
-        sumStatus = new JLabel("Ready", SwingConstants.RIGHT);
+        houseResult = new JLabel(HOUSE_RESULT, SwingConstants.LEFT);
         Border border = BorderFactory.createRaisedBevelBorder();
         playerInfo.setBorder(border);
         playerBets.setBorder(border);
         playerResult.setBorder(border);
-        houseStatus.setBorder(border);
-        sumStatus.setBorder(border);
+        houseResult.setBorder(border);
 
-        setLayout(new GridLayout(1, 5));
-        // add three labels
+        setLayout(new GridLayout(1, 4));
+        // add labels
         add(playerInfo);
         add(playerBets);
         add(playerResult);
-        add(houseStatus);
-        add(sumStatus);
+        add(houseResult);
+
     }
 
     public void updatePlayerStatus(Player player) {
@@ -54,7 +51,7 @@ public class StatusBar extends JPanel {
         playerResult.setText(result);
     }
 
-    public void updateHouseStatus(int points) {
-        houseStatus.setText(HOUSE_POINTS + points);
+    public void updateHouseResult(int result) {
+        houseResult.setText(HOUSE_RESULT + result);
     }
 }
