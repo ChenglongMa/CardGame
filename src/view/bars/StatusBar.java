@@ -37,6 +37,10 @@ public class StatusBar extends JPanel {
 
     }
 
+    /**
+     * Set the text on {@link StatusBar}
+     * @param player
+     */
     public void updatePlayerStatus(Player player) {
         String info = CURR_PLAYER;
         String bets = BETS;

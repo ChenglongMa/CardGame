@@ -87,6 +87,12 @@ public class MainGamePanel extends JPanel {
         });
     }
 
+    /**
+     * Return a panel for a certain player
+     *
+     * @param player
+     * @return
+     */
     public CardPanel getPlayerPanel(Player player) {
         if (!cardPanelMap.containsKey(player)) {
             CardPanel panel = new CardPanel();
@@ -119,6 +125,9 @@ public class MainGamePanel extends JPanel {
         this.currentPlayer = currentPlayer;
     }
 
+    /**
+     * Set the status of components on {@link MainGamePanel}
+     */
     public void updateStatus() {
         boolean canPlace = currentPlayer != null && currentPlayer.getPoints() > 0;
         boolean canDeal = canPlace && currentPlayer.getBet() > 0;

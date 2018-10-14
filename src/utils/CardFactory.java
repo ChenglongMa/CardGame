@@ -8,6 +8,12 @@ public class CardFactory {
     private static final String FILE_PREFIX = "/cards/";
     private static final String FILE_SUFFIX = ".png";
 
+    /**
+     * Set the icon of {@link JLabel} following different {@link PlayingCard}
+     *
+     * @param card
+     * @return
+     */
     public static Icon getIcon(PlayingCard card) {
         String suit = card.getSuit().toString().toLowerCase();
         String value = card.getValue().toString().toLowerCase();

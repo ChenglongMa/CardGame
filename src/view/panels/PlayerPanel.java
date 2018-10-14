@@ -51,7 +51,6 @@ public class PlayerPanel extends JPanel implements ListSelectionListener {
         playerJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         playerJList.setCellRenderer(new PlayerListCellRenderer());
         playerJList.addListSelectionListener(this);
-//        setSelectedIndex();
         addJList(playerJList);
         refreshListLater();
     }

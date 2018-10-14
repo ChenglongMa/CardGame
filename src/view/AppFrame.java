@@ -1,7 +1,6 @@
 package view;
 
 import model.GameEngineImpl;
-import model.SimplePlayer;
 import model.interfaces.GameEngine;
 import view.callback.GameEngineCallbackGUI;
 import view.interfaces.GameEngineCallback;
@@ -45,10 +44,6 @@ public class AppFrame extends JFrame {
 
         GameEngineCallback gameEngineCallback = new GameEngineCallbackGUI(this);
         gameEngine.addGameEngineCallback(gameEngineCallback);
-
-        //TODO: for test
-        gameEngine.addPlayer(new SimplePlayer("1", "John", 500));
-        gameEngine.addPlayer(new SimplePlayer("2", "Tom", 1000));
     }
 
     private void addMenuBar() {
@@ -72,11 +67,6 @@ public class AppFrame extends JFrame {
 
     public MainGamePanel getGamePanel() {
         return gamePanel;
-    }
-
-    @Deprecated
-    public void setGamePanel(MainGamePanel gamePanel) {
-        contentPane.setRightComponent(gamePanel);
     }
 
     public GameEngine getGameEngine() {

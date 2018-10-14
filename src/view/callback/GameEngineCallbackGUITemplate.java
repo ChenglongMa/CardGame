@@ -7,7 +7,9 @@ import view.interfaces.GameEngineCallback;
 
 import javax.swing.*;
 
-
+/**
+ * The template for async invoke GUI operation
+ */
 public abstract class GameEngineCallbackGUITemplate implements GameEngineCallback {
     abstract void addPlayerCard(Player player, PlayingCard card);
 

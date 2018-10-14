@@ -34,6 +34,10 @@ public class LeftToolbar extends AbstractToolBar {
         editPlayerBtn.addActionListener(listener);
     }
 
+    /**
+     * set the status of button on tool bar
+     * @param enabled
+     */
     public void setButtonEnabled(boolean enabled) {
         editPlayerBtn.setEnabled(enabled);
         deletePlayerBtn.setEnabled(enabled);

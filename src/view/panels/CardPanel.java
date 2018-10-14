@@ -34,6 +34,9 @@ public class CardPanel extends JLayeredPane {
         add(c, constraints++);
     }
 
+    /**
+     * Clear the cards for next round
+     */
     public void clearCard() {
         initLocation();
         removeAll();

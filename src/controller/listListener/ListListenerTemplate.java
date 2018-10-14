@@ -6,6 +6,9 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Template pattern for add/edit/delete operation of JList
+ */
 public abstract class ListListenerTemplate implements ActionListener {
     private final PlayerPanel playerPanel;
 

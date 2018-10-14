@@ -17,6 +17,9 @@ public class DealListener implements ActionListener {
         toolbar = gamePanel.getToolbar();
     }
 
+    /**
+     * Set components status before dealing
+     */
     private void ready() {
         toolbar.setCanPlaceBet(false);
         toolbar.setCanDeal(false);
