@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainGamePanel extends JPanel {
+    private static final int DELAY_MILLS = 1000;
     private final RightToolbar toolbar;
     private final StatusBar statusBar;
     private final CardPanel housePanel;
@@ -22,15 +23,14 @@ public class MainGamePanel extends JPanel {
     private final DealListener dealListener;
     private final Map<Player, CardPanel> cardPanelMap;
     private final JSplitPane contentPane;
-    private final Thread dealHouseThread;
     private Thread dealPlayerThread;
     private Player currentPlayer;
 
     public MainGamePanel(AppFrame app) {
         cardPanelMap = new HashMap<>();
         cardPanelMap.put(null, new CardPanel());
-        dealListener = new DealListener(this);
         toolbar = new RightToolbar();
+        dealListener = new DealListener(this);
         toolbar.setBetListener(new BetListener(this));
         toolbar.setDealListener(dealListener);
         statusBar = new StatusBar();
@@ -51,14 +51,13 @@ public class MainGamePanel extends JPanel {
         add(toolbar, BorderLayout.NORTH);
         this.appFrame = app;
         gameEngine = app.getGameEngine();
-        dealHouseThread = getHouseThread();
     }
 
-    private Thread getHouseThread() {
+    public Thread getHouseThread() {
         return new Thread(new Runnable() {
             @Override
             public void run() {
-                gameEngine.dealHouse(1000);
+                gameEngine.dealHouse(DELAY_MILLS);
             }
         });
     }
@@ -73,13 +72,13 @@ public class MainGamePanel extends JPanel {
         dealPlayerThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                gameEngine.dealPlayer(currentPlayer, 1000);//TODO: need more flexible
+                gameEngine.dealPlayer(currentPlayer, DELAY_MILLS);
                 for (Player p : gameEngine.getAllPlayers()) {
                     if (p.getPoints() > 0 && p.getBet() <= 0) {
                         return;
                     }
                 }
-                dealHouseThread.start();
+                getHouseThread().start();
             }
         });
     }
@@ -116,16 +115,13 @@ public class MainGamePanel extends JPanel {
         this.currentPlayer = currentPlayer;
     }
 
-    public void updatePlayerStatus() {
+    public void updateStatus() {
         //TODO:check change or not
         boolean canPlace = currentPlayer != null && currentPlayer.getPoints() > 0;
         boolean canDeal = canPlace && currentPlayer.getBet() > 0;
         toolbar.setCanPlaceBet(canPlace);
         toolbar.setCanDeal(canDeal);
+        toolbar.setDealHouseEnabled(true);
         statusBar.updatePlayerStatus(currentPlayer);
-    }
-
-    public Thread getDealHouseThread() {
-        return dealHouseThread;
     }
 }

@@ -6,19 +6,22 @@ import javax.swing.*;
 import java.awt.event.ActionListener;
 
 public class RightToolbar extends AbstractToolBar {
+    public static final String DEAL_PLAYER_COMMAND = "Deal Player";
+    public static final String DEAL_HOUSE_COMMAND = "Deal House";
     private final JButton placeBetBtn;
-    private final JButton dealCardBtn;
-    private final JButton stopBtn;
+    private final JButton dealPlayer;
+    private final JButton dealHouse;
 
     public RightToolbar() {
         super();
         placeBetBtn = new JButton("Place Bet");//TODO:add listener
         add(placeBetBtn);
-        dealCardBtn = new JButton("Deal Card");//todo:set enabled
-        add(dealCardBtn);
-        stopBtn = new JButton("Stop");//todo:set enabled
-        stopBtn.setEnabled(true);
-        add(stopBtn);
+        dealPlayer = new JButton("Deal Player");//todo:set enabled
+        dealPlayer.setActionCommand(DEAL_PLAYER_COMMAND);
+        add(dealPlayer);
+        dealHouse = new JButton("Deal House");//todo:set enabled
+        dealHouse.setActionCommand(DEAL_HOUSE_COMMAND);
+        add(dealHouse);
         setCanPlaceBet(false);
         setCanDeal(false);
     }
@@ -30,10 +33,14 @@ public class RightToolbar extends AbstractToolBar {
 
     }
 
+    public void setDealHouseEnabled(boolean canDeal) {
+        dealHouse.setEnabled(canDeal);
+    }
+
     public void setCanDeal(boolean canDeal) {
-        dealCardBtn.setEnabled(canDeal);
+        dealPlayer.setEnabled(canDeal);
         String tip = canDeal ? null : "Please place your bet.";
-        dealCardBtn.setToolTipText(tip);
+        dealPlayer.setToolTipText(tip);
     }
 
     public void setBetListener(ActionListener listener) {
@@ -41,6 +48,7 @@ public class RightToolbar extends AbstractToolBar {
     }
 
     public void setDealListener(ActionListener listener) {
-        dealCardBtn.addActionListener(listener);
+        dealPlayer.addActionListener(listener);
+        dealHouse.addActionListener(listener);
     }
 }

@@ -23,8 +23,6 @@ public class AppFrame extends JFrame {
         super("Card Game");
         gameEngine = new GameEngineImpl();
         gamePanel = new MainGamePanel(this);
-        GameEngineCallback gameEngineCallback = new GameEngineCallbackGUI(gamePanel);
-        gameEngine.addGameEngineCallback(gameEngineCallback);
 
         contentPane = new JSplitPane();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -44,6 +42,8 @@ public class AppFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
         setVisible(true);
+        GameEngineCallback gameEngineCallback = new GameEngineCallbackGUI(this);
+        gameEngine.addGameEngineCallback(gameEngineCallback);
         //TODO: for test
 //        gameEngine.addGameEngineCallback(new GameEngineCallbackImpl());
         gameEngine.addPlayer(new SimplePlayer("1", "John", 500));

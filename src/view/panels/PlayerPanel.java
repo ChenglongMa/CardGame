@@ -16,8 +16,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 public class PlayerPanel extends JPanel implements ListSelectionListener {
     //    private final List<Player> players;
@@ -25,10 +23,10 @@ public class PlayerPanel extends JPanel implements ListSelectionListener {
     private final LeftToolbar toolbar;
     private final AppFrame appFrame;
     private final GameEngine gameEngine;
-    private final Map<Player, Thread> playerThreads;
     private Player selectedPlayer;
     private int selectedIndex = -1;
     private boolean toChange = true;
+    private boolean changeIndex = true;
 
     public PlayerPanel(AppFrame appFrame) {
         setBorder(null);
@@ -53,10 +51,9 @@ public class PlayerPanel extends JPanel implements ListSelectionListener {
         playerJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         playerJList.setCellRenderer(new PlayerListCellRenderer());
         playerJList.addListSelectionListener(this);
-        setSelectedIndex();
+//        setSelectedIndex();
         addJList(playerJList);
-        refreshList();
-        playerThreads = new HashMap<>();
+        refreshListLater();
     }
 
     private void addJList(JList jList) {
@@ -76,14 +73,21 @@ public class PlayerPanel extends JPanel implements ListSelectionListener {
         add(jToolBar, gbc);
     }
 
-    public void refreshList() {
+    public void refreshListAndWait() {
+        changeIndex = false;
+        Collection<Player> list = gameEngine.getAllPlayers();
+        Player[] players = new Player[list.size()];
+        list.toArray(players);
+        playerJList.setListData(players);
+        setSelectedIndex();
+        changeIndex = true;
+    }
+
+    public void refreshListLater() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                Collection<Player> list = gameEngine.getAllPlayers();
-                Player[] players = new Player[list.size()];
-                list.toArray(players);
-                playerJList.setListData(players);
+                refreshListAndWait();
             }
         });
     }
@@ -114,7 +118,10 @@ public class PlayerPanel extends JPanel implements ListSelectionListener {
             return;
         }
         toChange = true;
-        selectedIndex = playerJList.getSelectedIndex();
+        if (changeIndex) {
+            selectedIndex = playerJList.getSelectedIndex();
+        }
+        changeIndex = true;
         selectedPlayer = playerJList.getSelectedValue();
         boolean hasSelected = selectedPlayer != null;
         gamePanel.setCurrentPlayer(selectedPlayer);
@@ -128,8 +135,6 @@ public class PlayerPanel extends JPanel implements ListSelectionListener {
         rToolbar.setCanDeal(hasSelected);
     }
 
-    //TODO: to be checked
-    @Deprecated
     public void setSelectedIndex() {
         int size = playerJList.getModel().getSize();
         int index = selectedIndex < size ? selectedIndex : size - 1;

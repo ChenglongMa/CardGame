@@ -19,7 +19,7 @@ public abstract class ListListenerTemplate implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         try {
             operation();
-            playerPanel.refreshList();
+            playerPanel.refreshListLater();
             //TODO:TBA
 //            String msg = "The list has been updated.";
 //            JOptionPane.showMessageDialog(playerPanel.getParent(), msg);

@@ -26,7 +26,6 @@ public class AddEditPlayerDialog extends JDialog implements ActionListener {
     public AddEditPlayerDialog(PlayerPanel owner) {
         setTitle("Add New Player");
         setModal(true);
-//        super(owner, "Add New Player", true);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setSize(300, 200);
         setLocationRelativeTo(owner.getParent());
