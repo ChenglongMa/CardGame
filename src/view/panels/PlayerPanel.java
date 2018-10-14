@@ -28,7 +28,7 @@ public class PlayerPanel extends JPanel implements ListSelectionListener {
     private final Map<Player, Thread> playerThreads;
     private Player selectedPlayer;
     private int selectedIndex = -1;
-
+    private boolean toChange = true;
 
     public PlayerPanel(AppFrame appFrame) {
         setBorder(null);
@@ -94,33 +94,38 @@ public class PlayerPanel extends JPanel implements ListSelectionListener {
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
+        MainGamePanel gamePanel = appFrame.getGamePanel();
+        Thread currThread = gamePanel.getCurrentPlayerThread();
         if (e.getValueIsAdjusting()) {
+            // Ask users if they want to switch to another player.
+            // if there is a running thread.
+            if (currThread != null && currThread.isAlive()) {
+                String msg = "Current game would be interrupted,\nDo you want to continue?";
+                int res = JOptionPane.showConfirmDialog(appFrame, msg);
+                if (res == JOptionPane.YES_OPTION) {
+                    currThread.interrupt();
+                } else {
+                    toChange = false;
+                }
+            }
             return;
         }
-        MainGamePanel gamePanel = appFrame.getGamePanel();
-        Thread currThread = gamePanel.getCurrentThread();
-        if (currThread != null && currThread.isAlive()) {
-            String msg = "Current game would be interrupted,\nDo you want to continue?";
-            int res = JOptionPane.showConfirmDialog(appFrame, msg);
-            if (res == JOptionPane.YES_OPTION) {
-                currThread.interrupt();
-            } else return;
+        if (!toChange) {
+            return;
         }
+        toChange = true;
         selectedIndex = playerJList.getSelectedIndex();
         selectedPlayer = playerJList.getSelectedValue();
         boolean hasSelected = selectedPlayer != null;
-        if (hasSelected) {
-            gamePanel.setCurrentPlayer(selectedPlayer);
-            gamePanel.switchPlayerPanel();
-        }
+        gamePanel.setCurrentPlayer(selectedPlayer);
+        gamePanel.switchPlayerPanel();
         toolbar.setButtonEnabled(hasSelected);
-//        gamePanel = appFrame.getGamePanel(selectedPlayer);
-//        appFrame.setGamePanel(gamePanel);
         StatusBar statusBar = gamePanel.getStatusBar();
         statusBar.updatePlayerStatus(selectedPlayer);
         RightToolbar rToolbar = gamePanel.getToolbar();
         hasSelected = hasSelected && selectedPlayer.getPoints() > 0;
         rToolbar.setCanPlaceBet(hasSelected);
+        rToolbar.setCanDeal(hasSelected);
     }
 
     //TODO: to be checked

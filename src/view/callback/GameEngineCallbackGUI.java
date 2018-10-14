@@ -1,15 +1,11 @@
 package view.callback;
 
-import model.interfaces.GameEngine;
 import model.interfaces.Player;
 import model.interfaces.PlayingCard;
-import view.interfaces.GameEngineCallback;
 import view.panels.CardPanel;
 import view.panels.MainGamePanel;
 
-import javax.swing.*;
-
-public class GameEngineCallbackGUI implements GameEngineCallback {
+public class GameEngineCallbackGUI extends GameEngineCallbackGUITemplate {
     private final CardPanel housePanel;
     private final MainGamePanel gamePanel;
     private CardPanel playerPanel;
@@ -20,12 +16,8 @@ public class GameEngineCallbackGUI implements GameEngineCallback {
         housePanel = gamePanel.getHousePanel();
     }
 
-    private void getCardPanel(Player player) {
-        playerPanel = gamePanel.getPlayerPanel(player);
-    }
-
-
-    private void addPlayerCard(Player player, PlayingCard card) {
+    @Override
+    void addPlayerCard(Player player, PlayingCard card) {
         playerPanel = gamePanel.getPlayerPanel(player);
         if (playerPanel == null) {
             return;
@@ -34,36 +26,19 @@ public class GameEngineCallbackGUI implements GameEngineCallback {
     }
 
     @Override
-    public void nextCard(final Player player, final PlayingCard card, GameEngine engine) {
-        addPlayerCard(player, card);
-    }
-
-    @Override
-    public void bustCard(Player player, PlayingCard card, GameEngine engine) {
-        addPlayerCard(player, card);
-    }
-
-    @Override
-    public void result(Player player, int result, GameEngine engine) {
+    void updateFinalResult(int result) {
+        gamePanel.getStatusBar().updateHouseResult(result);
         gamePanel.updatePlayerStatus();
+        //todo:未完成
     }
 
     @Override
-    public void nextHouseCard(PlayingCard card, GameEngine engine) {
+    void addHouseCard(PlayingCard card) {
         housePanel.addCard(card);
     }
 
     @Override
-    public void houseBustCard(PlayingCard card, GameEngine engine) {
-        if (housePanel != null) {
-            housePanel.addCard(card);
-        }
-        JOptionPane.showMessageDialog(housePanel, "HOUSE BUSTED!");
-    }
-
-    @Override
-    public void houseResult(int result, GameEngine engine) {
-        gamePanel.getStatusBar().updateHouseResult(result);
+    void updatePlayerStatus() {
         gamePanel.updatePlayerStatus();
     }
 }
