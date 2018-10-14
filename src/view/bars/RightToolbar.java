@@ -14,12 +14,12 @@ public class RightToolbar extends AbstractToolBar {
 
     public RightToolbar() {
         super();
-        placeBetBtn = new JButton("Place Bet");//TODO:add listener
+        placeBetBtn = new JButton("Place Bet");
         add(placeBetBtn);
-        dealPlayer = new JButton("Deal Player");//todo:set enabled
+        dealPlayer = new JButton("Deal Player");
         dealPlayer.setActionCommand(DEAL_PLAYER_COMMAND);
         add(dealPlayer);
-        dealHouse = new JButton("Deal House");//todo:set enabled
+        dealHouse = new JButton("Deal House");
         dealHouse.setActionCommand(DEAL_HOUSE_COMMAND);
         add(dealHouse);
         setCanPlaceBet(false);

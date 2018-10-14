@@ -20,9 +20,6 @@ public abstract class ListListenerTemplate implements ActionListener {
         try {
             operation();
             playerPanel.refreshListLater();
-            //TODO:TBA
-//            String msg = "The list has been updated.";
-//            JOptionPane.showMessageDialog(playerPanel.getParent(), msg);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(playerPanel.getParent(), ex.getMessage());
         }

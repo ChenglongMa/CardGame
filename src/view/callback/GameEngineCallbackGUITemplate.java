@@ -46,8 +46,8 @@ public abstract class GameEngineCallbackGUITemplate implements GameEngineCallbac
     }
 
     @Override
-    public final void houseResult(final int result, GameEngine engine) {
-        houseResult(result);
+    public final void houseResult(final int houseResult, GameEngine engine) {
+        houseResult(houseResult);
     }
 
     abstract void updateFinalResult(final int result);

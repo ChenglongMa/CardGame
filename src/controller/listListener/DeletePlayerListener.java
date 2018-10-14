@@ -15,7 +15,7 @@ public class DeletePlayerListener extends ListListenerTemplate {
     @Override
     void operation() {
         Player selectedPlayer = playerPanel.getSelectedPlayer();
-        if (selectedPlayer==null) {
+        if (selectedPlayer == null) {
             return;
         }
         GameEngine gameEngine = playerPanel.getGameEngine();

@@ -17,9 +17,6 @@ public class CardPanel extends JLayeredPane {
     public CardPanel() {
         initLocation();
         setOpaque(true);
-        //TODO
-//        Container parent = getParent();
-//        setPreferredSize(new Dimension(parent.getWidth(), parent.getHeight() / 2));
     }
 
     private void initLocation() {

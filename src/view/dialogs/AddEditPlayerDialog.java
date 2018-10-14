@@ -29,6 +29,7 @@ public class AddEditPlayerDialog extends JDialog implements ActionListener {
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setSize(300, 200);
         setLocationRelativeTo(owner.getParent());
+        setResizable(false);
         btnOk = new JButton("  OK  ");
         btnCancel = new JButton("Cancel");
 
@@ -166,10 +167,14 @@ public class AddEditPlayerDialog extends JDialog implements ActionListener {
     }
 
     private void setPlayer() {
-        String id = txtId.getText();
-        String name = txtName.getText();
-        int points = Integer.parseInt(txtPoints.getText());
-        player = new SimplePlayer(id, name, points);
+        try {
+            String id = txtId.getText();
+            String name = txtName.getText();
+            int points = Integer.parseInt(txtPoints.getText());
+            player = new SimplePlayer(id, name, points);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Please input valid number");
+        }
     }
 
     @Override

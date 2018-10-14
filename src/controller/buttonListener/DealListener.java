@@ -26,8 +26,6 @@ public class DealListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        //TODO: to be finished
-
         switch (e.getActionCommand()) {
             case RightToolbar.DEAL_PLAYER_COMMAND:
                 final Player player = gamePanel.getCurrentPlayer();

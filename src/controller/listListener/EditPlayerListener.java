@@ -6,7 +6,6 @@ import view.dialogs.AddEditPlayerDialog;
 import view.panels.PlayerPanel;
 
 public class EditPlayerListener extends ListListenerTemplate {
-    //TODO:to be finished
     private final PlayerPanel playerPanel;
 
     public EditPlayerListener(PlayerPanel playerPanel) {

@@ -18,9 +18,7 @@ public class MainGamePanel extends JPanel {
     private final RightToolbar toolbar;
     private final StatusBar statusBar;
     private final CardPanel housePanel;
-    private final AppFrame appFrame;
     private final GameEngine gameEngine;
-    private final DealListener dealListener;
     private final Map<Player, CardPanel> cardPanelMap;
     private final JSplitPane contentPane;
     private Thread dealPlayerThread;
@@ -30,9 +28,8 @@ public class MainGamePanel extends JPanel {
         cardPanelMap = new HashMap<>();
         cardPanelMap.put(null, new CardPanel());
         toolbar = new RightToolbar();
-        dealListener = new DealListener(this);
         toolbar.setBetListener(new BetListener(this));
-        toolbar.setDealListener(dealListener);
+        toolbar.setDealListener(new DealListener(this));
         statusBar = new StatusBar();
         setLayout(new BorderLayout());
         setBorder(null);
@@ -49,7 +46,6 @@ public class MainGamePanel extends JPanel {
         add(contentPane, BorderLayout.CENTER);
         add(statusBar, BorderLayout.SOUTH);
         add(toolbar, BorderLayout.NORTH);
-        this.appFrame = app;
         gameEngine = app.getGameEngine();
     }
 
@@ -57,7 +53,11 @@ public class MainGamePanel extends JPanel {
         return new Thread(new Runnable() {
             @Override
             public void run() {
-                gameEngine.dealHouse(DELAY_MILLS);
+                try {
+                    gameEngine.dealHouse(DELAY_MILLS);
+                } catch (Exception e) {
+                    //ignore - just stop animating
+                }
             }
         });
     }
@@ -66,13 +66,17 @@ public class MainGamePanel extends JPanel {
         return dealPlayerThread;
     }
 
-    public void switchPlayerPanel() {
+    void switchPlayerPanel() {
         CardPanel currPanel = getPlayerPanel(currentPlayer);
         contentPane.setTopComponent(currPanel);
         dealPlayerThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                gameEngine.dealPlayer(currentPlayer, DELAY_MILLS);
+                try {
+                    gameEngine.dealPlayer(currentPlayer, DELAY_MILLS);
+                } catch (Exception e) {
+                    //ignore - just stop animating
+                }
                 for (Player p : gameEngine.getAllPlayers()) {
                     if (p.getPoints() > 0 && p.getBet() <= 0) {
                         return;
@@ -111,12 +115,11 @@ public class MainGamePanel extends JPanel {
         return currentPlayer;
     }
 
-    public void setCurrentPlayer(Player currentPlayer) {
+    void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
 
     public void updateStatus() {
-        //TODO:check change or not
         boolean canPlace = currentPlayer != null && currentPlayer.getPoints() > 0;
         boolean canDeal = canPlace && currentPlayer.getBet() > 0;
         toolbar.setCanPlaceBet(canPlace);

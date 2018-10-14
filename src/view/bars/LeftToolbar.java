@@ -14,11 +14,11 @@ public class LeftToolbar extends AbstractToolBar {
 
     public LeftToolbar() {
         super();
-        newPlayerBtn = new JButton("New Player");//TODO:add listener
+        newPlayerBtn = new JButton("New Player");
         add(newPlayerBtn);
-        editPlayerBtn = new JButton("Edit Player");//todo:set enabled
+        editPlayerBtn = new JButton("Edit Player");
         add(editPlayerBtn);
-        deletePlayerBtn = new JButton("Delete Player");//todo:set enabled
+        deletePlayerBtn = new JButton("Delete Player");
         add(deletePlayerBtn);
     }
 
